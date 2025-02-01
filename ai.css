@@ -1,0 +1,101 @@
+body {
+    background-image: url('website_background_image.jpeg'); /* Update the path if necessary */
+    background-size: cover; /* Ensures it covers the whole page */
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    padding-top: 0px;
+}
+/* 
+.navbar {
+    border-radius: 1.5rem;
+    width: 100%;
+}
+
+.nav-bar {
+    align-items: center;
+    height: 40px;
+    top: 0;
+    left: 0;
+    right: 0;
+}
+
+.nav-bar a {
+    font-size: 25px;
+    color: white;
+    width: 100%;
+} */
+
+
+.nav-bar {
+    background-color: #62aab7;
+    width: 100%;
+    height: 60px;
+    color:white;
+    border-radius: 20px;
+}
+
+.nav-items {
+    margin-left: 10px;
+    display:flex;
+}
+
+.logo {
+    margin-left: 1rem;
+    margin-top: 1rem;
+    font-size: 28px;
+    align-self: center;
+}
+
+.name {
+    margin-top: 1rem;
+    margin-left: 1rem;
+    align-items: center;
+    font-size: 20px;
+}
+
+.main-content {
+    width: 85rem;
+    height: 45rem;
+    padding-top: 70px;
+    background-color: rgba(255, 255, 255, 0.14);
+    margin-left: 2.5rem;
+    border-radius: 2rem;
+    margin-top: 2rem;
+    border: 2px solid rgb(129, 202, 225);
+    box-shadow: 0px 0px 10px 10px rgba(121, 213, 227, 0.468);
+}
+
+.main-inside {
+    width: 82rem;
+    height: 43rem;
+    /* background-color: #222e2e; */
+    margin-left: 1.5rem;
+    margin-top: -3.5rem; 
+    border-radius: 2rem;
+    /* box-shadow: 0px 0px 5px 5px rgba(121, 213, 227, 0.468); */
+    display:flex;
+}
+
+.welcome {
+    color: white;
+    font-size: 200px;
+    text-align: center;
+    margin-top: 300px;
+    margin-bottom: 200px;
+}
+
+.graph {
+    height: 100%;
+    width: 50%;
+    background-color: rgb(255, 255, 255);
+    border-radius: 2rem;
+    margin:3px;
+}
+
+.monitor {
+    height: 100%;
+    width: 50%;
+    background-color: rgb(197, 247, 255);
+    border-radius: 2rem;
+    margin: 3px;
+}
