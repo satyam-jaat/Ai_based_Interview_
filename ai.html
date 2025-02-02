@@ -32,15 +32,33 @@
             <div class="graph">
                 <div class="graph-box"></div>
                 <div class="graph-box"></div>
-                <div class="graph-box"></div>
+                <div id="videoDiv" class="graph-box">
+                    <video id="videoElement" autoplay></video>
+                </div>
                 <div class="graph-box"></div>
             </div>
             <div class="monitor">
                 <div class="monitor-box">
-                    <div class="monitor-rectangle-box"></div>
+                    <!-- <div class="monitor-rectangle-box"></div> -->
                 </div>
             </div>
         </div>
     </div>
+
+
+
+    <script>
+        // Access webcam and display video in the first div
+        const videoElement = document.getElementById('videoElement');
+
+        // Request access to the user's webcam
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(stream => {
+                videoElement.srcObject = stream;
+            })
+            .catch(error => {
+                console.error('Error accessing webcam:', error);
+            });
+    </script>
 </body>
 </html>
