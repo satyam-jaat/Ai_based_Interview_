@@ -96,6 +96,7 @@ body {
     width: 40%;
     background-color: #1a2024;
     border-radius: 2rem;
+
 }
 
 .graph-box {
@@ -116,7 +117,6 @@ body {
     margin-top: 0.5rem;
     margin-left: 0.5rem;
     display: flex;
-
     /* this is the css part of 3d model  */
     /* margin: 0; */
     overflow: hidden;
@@ -124,8 +124,6 @@ body {
     display: flex;
     justify-content: flex-end;
     align-items: center;
-
-
 }
 
 #videoDiv {
@@ -150,4 +148,53 @@ body {
     width: 100%;
     background-color: white;
     height: 100%;
+    
+}
+
+.overlay-box {
+    position: absolute;
+    bottom: 40px;
+    height: 170px;
+    left: 40px;
+    right: 40px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+    border-radius: 1rem;
+    padding: 20px;
+    color: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.23);
+    z-index: 2;
+}
+
+.overlay-box h3 {
+    margin: 0 0 10px 0;
+    font-size: 1.2em;
+    color: #a8caff;
+}
+
+.overlay-box p {
+    margin: 0;
+    font-size: 0.9em;
+    opacity: 0.8;
+}
+
+.status-indicator {
+    display: flex;
+    align-items: center;
+    margin-top: 15px;
+}
+
+.status-light {
+    width: 10px;
+    height: 10px;
+    background: #00ff00;
+    border-radius: 50%;
+    margin-right: 8px;
+    box-shadow: 0 0 8px #00ff00;
+}
+
+/* Updated monitor-box to add position: relative */
+.monitor-box {
+    position: relative;
 }

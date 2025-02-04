@@ -1,16 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Interview</title>
     <link rel="icon" href="http://www.w3.org/2000/svg" type="image/svg+xml">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+        integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="ai.css">
-    
+
 
 </head>
+
 <body>
 
     <!-- <div class="nav-bar">
@@ -28,7 +32,7 @@
     <div class="welcome">
         Welcome
     </div> -->
-    
+
 
     <div class="main-content">
         <div class="main-inside">
@@ -41,128 +45,195 @@
                 <div class="graph-box"></div>
             </div>
             <div class="monitor">
-                <div class="monitor-box">
-                    <div class="model" id="scene-container"></div>
-
+                <div class="monitor-box" style="    box-shadow: 0px 0px 8px 8px rgba(0, 0, 0, 0.741);
+">
+                    <div class="model" id="scene-container">
+                        <div class="overlay-box">
+                            <h3>Model Status</h3>
+                            <p>AI Assistant Active</p>
+                            <div class="status-indicator">
+                                <div class="status-light"></div>
+                                <span>Connected</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-
     <script src="ai.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
     <script>
+        let isSpeaking = false;
+        let silenceTimer;
+        let targetRotationWhenSpeaking = { x: 0, y: 0 };
         // Scene setup
         const scene = new THREE.Scene();
-        // scene.background = new THREE.Color(0xD3D3D3);  // Set background color to white 0x505050 <- dark grey
-
+    
         const textureLoader = new THREE.TextureLoader();
         const backgroundTexture = textureLoader.load('bg.avif');  // Path to your image file
         scene.background = backgroundTexture;
-
-
+    
         const camera = new THREE.PerspectiveCamera(60, 4 / 6, 0.1, 1000);
         const renderer = new THREE.WebGLRenderer({ antialias: true });
         renderer.setSize(document.getElementById("scene-container").clientWidth, document.getElementById("scene-container").clientHeight);
         renderer.setPixelRatio(window.devicePixelRatio);
         document.getElementById("scene-container").appendChild(renderer.domElement);
-
+    
         // Improved lighting with bluish color
         const ambientLight = new THREE.AmbientLight(0xa8caff, 1.2);  // Light bluish ambient light
         scene.add(ambientLight);
-
-        const directionalLight = new THREE.DirectionalLight(0xa8caff, 1.5);  // Light bluish directional light
-        directionalLight.position.set(5, 5, 5);
+    
+        const directionalLight = new THREE.DirectionalLight(0xA8CAFF, 0.01);  // Light bluish directional light
+        directionalLight.position.set(0, 0, 5);
         directionalLight.castShadow = true;
         scene.add(directionalLight);
-
+    
         // Spotlight with bluish color to make the model shine
         const spotLight = new THREE.SpotLight(0xa8caff, 2, 10, Math.PI / 4, 0.1, 2);  // Light bluish spotlight
-        spotLight.position.set(0, 2, 5);
+        spotLight.position.set(0, 5, 5);
         spotLight.castShadow = true;
         scene.add(spotLight);
-
+    
         // Add subtle background light with bluish tint
         const backLight = new THREE.PointLight(0xa8caff, 0.8);  // Light bluish backlight
         backLight.position.set(-5, -5, -5);
         scene.add(backLight);
-
+    
+        async function setupVoiceDetection() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                const audioContext = new AudioContext();
+                const analyser = audioContext.createAnalyser();
+                const microphone = audioContext.createMediaStreamSource(stream);
+    
+                microphone.connect(analyser);
+                analyser.fftSize = 512;
+                const bufferLength = analyser.frequencyBinCount;
+                const dataArray = new Uint8Array(bufferLength);
+    
+                function detectVoice() {
+                    analyser.getByteFrequencyData(dataArray);
+                    let sum = dataArray.reduce((a, b) => a + b, 0);
+    
+                    if (sum > 7000) { // Adjust this threshold as needed
+                        if (!isSpeaking) {
+                            isSpeaking = true;
+                            targetRotationWhenSpeaking.x = currentRotationX;
+                            targetRotationWhenSpeaking.y = currentRotationY;
+                        }
+                        clearTimeout(silenceTimer);
+                        silenceTimer = setTimeout(() => {
+                            isSpeaking = false;
+                        }, 1800); // 2 seconds of silence
+                    }
+    
+                    requestAnimationFrame(detectVoice);
+                }
+    
+                detectVoice();
+            } catch (err) {
+                console.error('Error accessing microphone:', err);
+            }
+        }
+        
         // Model parameters
         let model;
         let currentRotationX = 0;
         let targetRotationX = 0;
         let currentRotationY = 0;
         let targetRotationY = 0;
-        const rotationSpeed = 0.1; // Increased speed
-        const maxRotation = THREE.MathUtils.degToRad(21); // Increased to 20 degrees
+        const rotationSpeed = 0.07; // Increased speed
+        const maxRotation = THREE.MathUtils.degToRad(22); // Increased to 20 degrees
         let isRotating = false;
-
+    
         // Load model
         const loader = new THREE.GLTFLoader();
         loader.load('Models/scene.gltf', (gltf) => {
             model = gltf.scene;
             scene.add(model);
-
+    
             // Center and scale model
-            model.position.set(0, 0.4, 1);
-            model.scale.set(2, 2, 2);
-
+            model.position.set(0, 1, 1);
+            model.scale.set(2.2, 2.2, 2.2);
+    
             // Start oscillation
             setNewRotationTarget();
+            setupVoiceDetection();
         }, undefined, (error) => {
             console.error(error);
         });
-
+    
         // Camera positioning
         camera.position.z = 3.5;
         camera.position.y = 0.5;
-
+    
         // Random oscillation logic
         function setNewRotationTarget() {
-            // Generate random angles within the increased range
-            targetRotationX = THREE.MathUtils.clamp(
-                currentRotationX + (Math.random() - 0.5) * maxRotation * 1.2, // Increased variation
-                -maxRotation,
-                maxRotation
-            );
-            targetRotationY = THREE.MathUtils.clamp(
-                currentRotationY + (Math.random() - 0.5) * maxRotation * 1.0, // Increased variation
-                -maxRotation,
-                maxRotation
-            );
+            // Generate random angles within the 22-degree range
+            targetRotationX = THREE.MathUtils.degToRad((Math.random() - 0.5) * 44); // ±22 degrees
+            targetRotationY = THREE.MathUtils.degToRad((Math.random() - 0.5) * 44); // ±22 degrees
             isRotating = true;
         }
-
+    
+        // Bouncing effect parameters
+        const bounceSpeed = 0.003;  // Speed of bounce
+        const bounceHeight = 0.02;  // Height of the bounce
+        let bounceOffset = 0;
+    
         // Animation loop
         function animate() {
             requestAnimationFrame(animate);
-            if (model && isRotating) {
-                // Smoothly interpolate to target rotation
-                currentRotationX = THREE.MathUtils.lerp(currentRotationX, targetRotationX, rotationSpeed);
-                currentRotationY = THREE.MathUtils.lerp(currentRotationY, targetRotationY, rotationSpeed);
-                model.rotation.x = currentRotationX;
-                model.rotation.y = currentRotationY;
-
-                // Check if close to target
-                if (Math.abs(currentRotationX - targetRotationX) < 0.005 && Math.abs(currentRotationY - targetRotationY) < 0.005) {
-                    isRotating = false;
-                    setTimeout(setNewRotationTarget, 400); // Reduced pause time
+    
+            if (model) {
+                if (isSpeaking) {
+                    // Smoothly return to original position
+                    currentRotationX = THREE.MathUtils.lerp(currentRotationX, 0, 0.1);
+                    currentRotationY = THREE.MathUtils.lerp(currentRotationY, 0, 0.1);
+                    model.rotation.x = currentRotationX;
+                    model.rotation.y = currentRotationY;
+    
+                    // Optional: Move camera closer
+                    camera.position.z = THREE.MathUtils.lerp(camera.position.z, 3.4, 0.1);
+                } else {
+                    // Existing rotation logic
+                    currentRotationX = THREE.MathUtils.lerp(currentRotationX, targetRotationX, rotationSpeed);
+                    currentRotationY = THREE.MathUtils.lerp(currentRotationY, targetRotationY, rotationSpeed);
+                    model.rotation.x = currentRotationX;
+                    model.rotation.y = currentRotationY;
+    
+                    // Check if close to target and set a new target
+                    if (Math.abs(currentRotationX - targetRotationX) < 0.005 &&
+                        Math.abs(currentRotationY - targetRotationY) < 0.005) {
+                        setNewRotationTarget(); // Set a new random target
+                    }
+    
+                    // Optional: Reset camera position
+                    camera.position.z = THREE.MathUtils.lerp(camera.position.z, 3.5, 0.1);
                 }
+    
+                // Bouncing effect (sine wave)
+                bounceOffset = Math.sin(Date.now() * bounceSpeed) * bounceHeight;
+                model.position.y = 1 + bounceOffset; // Apply bounce to the model's y position
+    
             }
+    
             renderer.render(scene, camera);
         }
-
+    
         // Handle window resize
         window.addEventListener('resize', () => {
             camera.aspect = document.getElementById("scene-container").clientWidth / document.getElementById("scene-container").clientHeight;
             camera.updateProjectionMatrix();
             renderer.setSize(document.getElementById("scene-container").clientWidth, document.getElementById("scene-container").clientHeight);
         });
-
+    
         // Start animation
         animate();
     </script>
     
+
 </body>
+
 </html>
