@@ -1,5 +1,5 @@
 body {
-    background-color: rgba(0, 0, 0, 0.903);
+    background-color: #000000ea;
 }
 
 .navbar {
@@ -19,20 +19,20 @@ body {
     font-size: 25px;
     color: white;
     width: 100%;
-} 
+}
 
 
 .nav-bar {
     background-color: #62aab7;
     width: 100%;
     height: 60px;
-    color:white;
+    color: white;
     border-radius: 20px;
 }
 
 .nav-items {
     margin-left: 10px;
-    display:flex;
+    display: flex;
 }
 
 .logo {
@@ -63,14 +63,15 @@ body {
 }
 
 .main-inside {
-    width: 82rem;
-    height: 43rem;
+    width: 84rem;
+    height: 44rem;
     /* background-color: #222e2e; */
-    margin-left: 1.5rem;
-    margin-top: -3.5rem; 
+    margin-left: 0.56rem;
+    margin-top: -4rem;
     border-radius: 2rem;
     /* box-shadow: 0px 0px 5px 5px rgba(121, 213, 227, 0.468); */
-    display:flex;
+    display: flex;
+    justify-content: space-between;
 }
 
 .welcome {
@@ -79,20 +80,20 @@ body {
     text-align: center;
     margin-top: 300px;
     margin-bottom: 200px;
-} 
+}
 
 .graph {
     height: 100%;
-    width: 50%;
+    width: 60%;
     background-color: #151a22;
     border-radius: 2rem;
-    display:flex;
+    display: flex;
     flex-wrap: wrap;
 }
 
 .monitor {
     height: 100%;
-    width: 50%;
+    width: 40%;
     background-color: #1a2024;
     border-radius: 2rem;
 }
@@ -104,41 +105,49 @@ body {
     background-color: rgba(255, 255, 255, 0.067);
     margin-left: 1.5rem;
     margin-top: 1rem;
-    display:flex;
+    display: flex;
 }
 
 .monitor-box {
-    height: 95%;
-    width: 95%;
+    height: 98%;
+    width: 97%;
     border-radius: 2rem;
-    background-color: #ffffff17;
-    margin-top: 1rem;
-    margin-left: 1rem;
-    display:flex;
-}
+    background-color: #ffffff17; 
+    margin-top: 0.5rem;
+    margin-left: 0.5rem;
+    display: flex;
 
-.monitor-rectangle-box {
-    height: 95%;
-    width: 95%;
-    background-color: rgb(197, 197, 197);
-    margin-left: 1rem;
-    margin-top: 1rem;
+    /* this is the css part of 3d model  */
+    /* margin: 0; */
+    overflow: hidden;
+    /* background: grey; */
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+
+
 }
 
 #videoDiv {
-    width: 45%;  
-    height: 45%; 
+    width: 45%;
+    height: 45%;
     border-radius: 2rem;
-    display: flex; 
-    justify-content: center; 
-    align-items: center; 
-    background-color: #151a22; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #151a22;
     box-shadow: 0 0 5px 5px grey;
 }
 
 #videoElement {
+    width: 95%;
+    height: 95%;
+    object-fit: cover;
+    border-radius: 2rem;
+}
+
+#scene-container {
     width: 100%;
+    background-color: white;
     height: 100%;
-    object-fit: cover;  
-    border-radius: 2rem; 
 }
