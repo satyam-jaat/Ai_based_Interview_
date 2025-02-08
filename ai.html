@@ -45,12 +45,11 @@
                 <div class="graph-box"></div>
             </div>
             <div class="monitor">
-                <div class="monitor-box" style="    box-shadow: 0px 0px 8px 8px rgba(0, 0, 0, 0.741);
-">
+                <div class="monitor-box">
                     <div class="model" id="scene-container">
                         <div class="overlay-box">
                             <h3>Model Status</h3>
-                            <p>AI Assistant Active</p>
+                            <p>AI Assistant Active is one of the most powerful robot</p>
                             <div class="status-indicator">
                                 <div class="status-light"></div>
                                 <span>Connected</span>
@@ -60,6 +59,7 @@
                 </div>
             </div>
         </div>
+
     </div>
     <script src="ai.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -70,53 +70,106 @@
         let targetRotationWhenSpeaking = { x: 0, y: 0 };
         // Scene setup
         const scene = new THREE.Scene();
-    
-        const textureLoader = new THREE.TextureLoader();
-        const backgroundTexture = textureLoader.load('bg.avif');  // Path to your image file
-        scene.background = backgroundTexture;
-    
-        const camera = new THREE.PerspectiveCamera(60, 4 / 6, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer({ antialias: true });
-        renderer.setSize(document.getElementById("scene-container").clientWidth, document.getElementById("scene-container").clientHeight);
-        renderer.setPixelRatio(window.devicePixelRatio);
-        document.getElementById("scene-container").appendChild(renderer.domElement);
-    
-        // Improved lighting with bluish color
-        const ambientLight = new THREE.AmbientLight(0xa8caff, 1.2);  // Light bluish ambient light
-        scene.add(ambientLight);
-    
-        const directionalLight = new THREE.DirectionalLight(0xA8CAFF, 0.01);  // Light bluish directional light
-        directionalLight.position.set(0, 0, 5);
-        directionalLight.castShadow = true;
-        scene.add(directionalLight);
-    
-        // Spotlight with bluish color to make the model shine
-        const spotLight = new THREE.SpotLight(0xa8caff, 2, 10, Math.PI / 4, 0.1, 2);  // Light bluish spotlight
-        spotLight.position.set(0, 5, 5);
-        spotLight.castShadow = true;
-        scene.add(spotLight);
-    
-        // Add subtle background light with bluish tint
-        const backLight = new THREE.PointLight(0xa8caff, 0.8);  // Light bluish backlight
-        backLight.position.set(-5, -5, -5);
-        scene.add(backLight);
-    
+
+        // Load background texture
+const textureLoader = new THREE.TextureLoader();
+const backgroundTexture = textureLoader.load('bg.avif'); // Path to your image file
+scene.background = backgroundTexture;
+
+// Camera and renderer setup
+const camera = new THREE.PerspectiveCamera(60, 4 / 6, 0.1, 1000);
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setSize(document.getElementById("scene-container").clientWidth, document.getElementById("scene-container").clientHeight);
+renderer.setPixelRatio(window.devicePixelRatio);
+document.getElementById("scene-container").appendChild(renderer.domElement);
+
+// Enable shadows
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap; // Soft shadows
+
+// Ambient light
+const ambientLight = new THREE.AmbientLight(0xa8caff, 0.5); // Reduced intensity for better contrast
+scene.add(ambientLight);
+
+// Directional light
+const directionalLight = new THREE.DirectionalLight(0xA8CAFF, 1.0); // Increased intensity
+directionalLight.position.set(5, 10, 7); // Adjust position for better lighting
+directionalLight.castShadow = true;
+
+// Optimize shadow settings
+directionalLight.shadow.mapSize.width = 1024; // Shadow resolution
+directionalLight.shadow.mapSize.height = 1024;
+directionalLight.shadow.camera.near = 0.5;
+directionalLight.shadow.camera.far = 50;
+directionalLight.shadow.bias = -0.001; // Reduce shadow acne
+
+scene.add(directionalLight);
+
+// Spotlight
+const spotLight = new THREE.SpotLight(0xa8caff, 2, 10, Math.PI / 4, 0.1, 2);
+spotLight.position.set(0, 5, 5);
+spotLight.castShadow = true;
+
+// Optimize spotlight shadow settings
+spotLight.shadow.mapSize.width = 1024;
+spotLight.shadow.mapSize.height = 1024;
+spotLight.shadow.camera.near = 0.5;
+spotLight.shadow.camera.far = 20;
+
+scene.add(spotLight);
+
+// Backlight
+const backLight = new THREE.PointLight(0xa8caff, 0.8);
+backLight.position.set(-5, -5, -5);
+scene.add(backLight);
+
+// Rectangular spotlight
+const rectSpotLight = new THREE.SpotLight(0xa8caff, 1, 4, Math.PI / 3, 0.5, 2);
+rectSpotLight.position.set(5, 2.5, 3);
+rectSpotLight.castShadow = true;
+
+// Optimize rectangular spotlight shadow settings
+rectSpotLight.shadow.mapSize.width = 1024;
+rectSpotLight.shadow.mapSize.height = 1024;
+rectSpotLight.shadow.camera.near = 0.5;
+rectSpotLight.shadow.camera.far = 20;
+
+scene.add(rectSpotLight);
+
+// Add environment map for reflections
+const pmremGenerator = new THREE.PMREMGenerator(renderer);
+pmremGenerator.compileEquirectangularShader();
+
+new THREE.CubeTextureLoader()
+    .setPath('path/to/environment/') // Path to your environment map folder
+    .load(['px.jpg', 'nx.jpg', 'py.jpg', 'ny.jpg', 'pz.jpg', 'nz.jpg'], (cubeTexture) => {
+        scene.environment = pmremGenerator.fromCubemap(cubeTexture).texture;
+    });
+
+// Optional: Add a ground plane for shadows
+const groundGeometry = new THREE.PlaneGeometry(20, 20);
+const groundMaterial = new THREE.MeshStandardMaterial({ color: 0x808080 });
+const ground = new THREE.Mesh(groundGeometry, groundMaterial);
+ground.rotation.x = -Math.PI / 2; // Rotate to horizontal
+ground.receiveShadow = true;
+// scene.add(ground);
+
         async function setupVoiceDetection() {
             try {
                 const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
                 const audioContext = new AudioContext();
                 const analyser = audioContext.createAnalyser();
                 const microphone = audioContext.createMediaStreamSource(stream);
-    
+
                 microphone.connect(analyser);
                 analyser.fftSize = 512;
                 const bufferLength = analyser.frequencyBinCount;
                 const dataArray = new Uint8Array(bufferLength);
-    
+
                 function detectVoice() {
                     analyser.getByteFrequencyData(dataArray);
                     let sum = dataArray.reduce((a, b) => a + b, 0);
-    
+
                     if (sum > 7000) { // Adjust this threshold as needed
                         if (!isSpeaking) {
                             isSpeaking = true;
@@ -128,16 +181,16 @@
                             isSpeaking = false;
                         }, 1800); // 2 seconds of silence
                     }
-    
+
                     requestAnimationFrame(detectVoice);
                 }
-    
+
                 detectVoice();
             } catch (err) {
                 console.error('Error accessing microphone:', err);
             }
         }
-        
+
         // Model parameters
         let model;
         let currentRotationX = 0;
@@ -147,28 +200,28 @@
         const rotationSpeed = 0.07; // Increased speed
         const maxRotation = THREE.MathUtils.degToRad(22); // Increased to 20 degrees
         let isRotating = false;
-    
+
         // Load model
         const loader = new THREE.GLTFLoader();
-        loader.load('Models/scene.gltf', (gltf) => {
+        loader.load('/Models/scene.gltf', (gltf) => {
             model = gltf.scene;
             scene.add(model);
-    
+
             // Center and scale model
             model.position.set(0, 1, 1);
             model.scale.set(2.2, 2.2, 2.2);
-    
+
             // Start oscillation
             setNewRotationTarget();
             setupVoiceDetection();
         }, undefined, (error) => {
             console.error(error);
         });
-    
+
         // Camera positioning
         camera.position.z = 3.5;
         camera.position.y = 0.5;
-    
+
         // Random oscillation logic
         function setNewRotationTarget() {
             // Generate random angles within the 22-degree range
@@ -176,24 +229,24 @@
             targetRotationY = THREE.MathUtils.degToRad((Math.random() - 0.5) * 44); // ±22 degrees
             isRotating = true;
         }
-    
+
         // Bouncing effect parameters
         const bounceSpeed = 0.003;  // Speed of bounce
         const bounceHeight = 0.02;  // Height of the bounce
         let bounceOffset = 0;
-    
+
         // Animation loop
         function animate() {
             requestAnimationFrame(animate);
-    
+
             if (model) {
                 if (isSpeaking) {
                     // Smoothly return to original position
-                    currentRotationX = THREE.MathUtils.lerp(currentRotationX, 0, 0.1);
-                    currentRotationY = THREE.MathUtils.lerp(currentRotationY, 0, 0.1);
+                    currentRotationX = THREE.MathUtils.lerp(currentRotationX, 0, 0.09);
+                    currentRotationY = THREE.MathUtils.lerp(currentRotationY, 0, 0.09);
                     model.rotation.x = currentRotationX;
                     model.rotation.y = currentRotationY;
-    
+
                     // Optional: Move camera closer
                     camera.position.z = THREE.MathUtils.lerp(camera.position.z, 3.4, 0.1);
                 } else {
@@ -202,37 +255,37 @@
                     currentRotationY = THREE.MathUtils.lerp(currentRotationY, targetRotationY, rotationSpeed);
                     model.rotation.x = currentRotationX;
                     model.rotation.y = currentRotationY;
-    
+
                     // Check if close to target and set a new target
                     if (Math.abs(currentRotationX - targetRotationX) < 0.005 &&
                         Math.abs(currentRotationY - targetRotationY) < 0.005) {
                         setNewRotationTarget(); // Set a new random target
                     }
-    
+
                     // Optional: Reset camera position
                     camera.position.z = THREE.MathUtils.lerp(camera.position.z, 3.5, 0.1);
                 }
-    
+
                 // Bouncing effect (sine wave)
                 bounceOffset = Math.sin(Date.now() * bounceSpeed) * bounceHeight;
                 model.position.y = 1 + bounceOffset; // Apply bounce to the model's y position
-    
+
             }
-    
+
             renderer.render(scene, camera);
         }
-    
+
         // Handle window resize
         window.addEventListener('resize', () => {
             camera.aspect = document.getElementById("scene-container").clientWidth / document.getElementById("scene-container").clientHeight;
             camera.updateProjectionMatrix();
             renderer.setSize(document.getElementById("scene-container").clientWidth, document.getElementById("scene-container").clientHeight);
         });
-    
+
         // Start animation
         animate();
     </script>
-    
+
 
 </body>
 

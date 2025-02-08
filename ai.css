@@ -50,23 +50,23 @@ body {
 }
 
 .main-content {
-    width: 85rem;
-    height: 45rem;
+    width: 88rem;
+    height: 47rem;
     padding-top: 70px;
     background-color: rgba(25, 25, 25, 0.856);
-    margin-left: 2.5rem;
+    margin-left: 0.9rem;
     border-radius: 2rem;
-    margin-top: 2rem;
+    margin-top: 0.7rem;
     border: 2px solid grey;
     box-shadow: 0px 0px 5px 5px rgba(89, 160, 171, 0.277);
     margin-bottom: 2rem;
 }
 
 .main-inside {
-    width: 84rem;
-    height: 44rem;
+    width: 87rem;
+    height: 46rem;
     /* background-color: #222e2e; */
-    margin-left: 0.56rem;
+    margin-left: 0.5rem;
     margin-top: -4rem;
     border-radius: 2rem;
     /* box-shadow: 0px 0px 5px 5px rgba(121, 213, 227, 0.468); */
@@ -85,7 +85,9 @@ body {
 .graph {
     height: 100%;
     width: 60%;
-    background-color: #151a22;
+    background-image: url('graph_background.png');
+    background-repeat: no-repeat;
+    background-size: cover;
     border-radius: 2rem;
     display: flex;
     flex-wrap: wrap;
@@ -102,11 +104,19 @@ body {
 .graph-box {
     height: 45%;
     width: 45%;
-    border-radius: 2rem;
-    background-color: rgba(255, 255, 255, 0.067);
+    /* border-radius: 2rem; */
+    /* background-color: rgba(255, 255, 255, 0.067); */
     margin-left: 1.5rem;
     margin-top: 1rem;
     display: flex;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+    border-radius: 1rem;
+    padding: 20px;
+    color: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.23);
+    z-index: 2;
 }
 
 .monitor-box {
@@ -129,12 +139,12 @@ body {
 #videoDiv {
     width: 45%;
     height: 45%;
-    border-radius: 2rem;
+    /* border-radius: 2rem; */
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #151a22;
-    box-shadow: 0 0 5px 5px grey;
+    /* background-color: #151a22; */
+    /* box-shadow: 0 0 5px 5px grey; */
 }
 
 #videoElement {
@@ -188,10 +198,10 @@ body {
 .status-light {
     width: 10px;
     height: 10px;
-    background: #00ff00;
+    background: #00ff00b3;
     border-radius: 50%;
     margin-right: 8px;
-    box-shadow: 0 0 8px #00ff00;
+    box-shadow: 0 0 8px #00ff00b7;
 }
 
 /* Updated monitor-box to add position: relative */
