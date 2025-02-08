@@ -11,38 +11,43 @@
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="ai.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-3d@latest"></script>
+    <style>
+        #chart-container {
+            width: 100%;
+            height: 100%;
+            background: rgba(214, 214, 214, 0.827);
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            padding: 10px;
+            transition: transform 0.3s ease;
+        }
 
-
+        .apply_graph {
+            background-color: rgba(226, 226, 226, 0.382); /* Light background for contrast */
+            border: 2px solid #2e3d49; /* Dark border to match the theme */
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+    </style>
 </head>
 
 <body>
-
-    <!-- <div class="nav-bar">
-        <div class="nav-items">
-            <div class="logo">
-                <i class="fa-solid fa-fire" ></i>
-            </div>
-            
-            <div class="name">
-                <h3>Pokiy</h3>
-            </div>
-        </div>
-    </div>
-
-    <div class="welcome">
-        Welcome
-    </div> -->
-
+    <!-- Content omitted for brevity -->
 
     <div class="main-content">
         <div class="main-inside">
             <div class="graph">
                 <div class="graph-box"></div>
                 <div class="graph-box"></div>
-                <!-- <div id="videoDiv" class="graph-box">
-                    <video id="videoElement" autoplay></video>
-                </div> -->
-                <div class="graph-box apply_graph"></div>
+                <div class="graph-box apply_graph">
+                    <div id="chart-container">
+                        <canvas id="my3DStackedChart"></canvas>
+                    </div>
+                </div>
             </div>
             <div class="monitor">
                 <div class="monitor-box">
@@ -59,7 +64,7 @@
                 </div>
             </div>
         </div>
-
+        
     </div>
     <script src="ai.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -284,6 +289,120 @@ ground.receiveShadow = true;
 
         // Start animation
         animate();
+
+        // Chart.js setup for the 3D interactive column chart
+        const ctx = document.getElementById('my3DStackedChart').getContext('2d');
+
+        const daysInMonth = Array.from({ length: 31 }, (_, i) => (i + 1).toString());
+        const dataset2 = Array.from({ length: 31 }, () => Math.floor(Math.random() * 20)); // Changed max value to 20
+
+        Chart.defaults.font.family = 'Arial';
+        Chart.defaults.color = '#16272e';
+
+        const data = {
+            labels: daysInMonth,
+            datasets: [{
+                label: 'Daily Analysis',
+                data: dataset2,
+                backgroundColor: 'rgba(46, 61, 73, 0.8)',  // Dark color for all bars
+                borderColor: 'rgba(255, 255, 255, 0.3)',
+                borderWidth: 2,
+                hoverBackgroundColor: 'rgba(46, 61, 73, 1)', // Slightly lighter on hover
+                hoverBorderWidth: 3,
+                borderRadius: 8,
+                barThickness: 15,  // Increased width of columns (from 12 to 15)
+            }]
+        };
+
+        const config = {
+            type: 'bar',
+            data: data,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: {
+                            font: { size: 14 },
+                            padding: 20,
+                            usePointStyle: true,
+                        }
+                    },
+                    tooltip: {
+                        enabled: true,
+                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                        titleFont: { size: 16 },
+                        bodyFont: { size: 14 },
+                        cornerRadius: 10,
+                        displayColors: false,
+                        callbacks: {
+                            label: (ctx) => `Value: ${ctx.raw}`
+                        }
+                    },
+                    datalabels: {
+                        anchor: 'end',
+                        align: 'top',
+                        color: '#2c3e50',
+                        font: { size: 10, weight: 'bold' },
+                        formatter: (value) => value > 0 ? value : ''
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: {
+                            display: true,  // Removed vertical grid lines
+                        },
+                        title: {
+                            display: true,
+                            text: 'Days of Month',
+                            font: { size: 14 }
+                        }
+                    },
+                    y: {
+                        min: 0,   // Minimum value on Y-axis
+                        max: 20,  // Reduced max value on Y-axis
+                        grid: {
+                            color: 'rgba(0, 0, 0, 0.05)',
+                            drawBorder: false,
+                            lineWidth: 1,  // Make horizontal grid lines thinner
+                        },
+                        title: {
+                            display: true,
+                            text: 'Performance Metrics',
+                            font: { size: 14 }
+                        },
+                        ticks: {
+                            stepSize: 2,  // Decreased gap between Y-axis numbers
+                            font: {
+                                style: 'normal'  // Non-italic style for Y-axis labels
+                            }
+                        }
+                    }
+                },
+                animation: {
+                    duration: 1500,
+                    easing: 'easeOutQuart',
+                    delay: (ctx) => ctx.dataIndex * 20
+                },
+                interaction: {
+                    mode: 'nearest',
+                    intersect: false
+                },
+                layout: {
+                    padding: { top: 20 }
+                },
+                onHover: (event, chartElement) => {
+                    if (chartElement.length) {
+                        event.native.target.style.cursor = 'pointer';
+                    } else {
+                        event.native.target.style.cursor = 'default';
+                    }
+                }
+            }
+        };
+
+        const chart = new Chart(ctx, config);
     </script>
 
 
