@@ -14,24 +14,37 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-3d@latest"></script>
+
     <style>
-        #chart-container {
+
+        .apply_graph,
+        .apply_pie_chart {
+            background-color: rgba(208, 222, 228, 0.382);
+            /* Light background for contrast */
+            border: 2px solid #2e3d49;
+            /* Dark border to match the theme */
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        #chart-container,
+        #pie-chart-container {
             width: 100%;
             height: 100%;
-            background: rgba(214, 214, 214, 0.827);
+            background: rgba(203, 211, 212, 0.881);
             border-radius: 20px;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
             padding: 10px;
             transition: transform 0.3s ease;
         }
 
-        .apply_graph {
-            background-color: rgba(226, 226, 226, 0.382); /* Light background for contrast */
-            border: 2px solid #2e3d49; /* Dark border to match the theme */
-            border-radius: 20px;
-            padding: 20px;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        #pie-chart-container {
+            height: 290.84px;
+            width: 331.2px;
+            margin: 0 auto;
         }
+
     </style>
 </head>
 
@@ -41,13 +54,20 @@
     <div class="main-content">
         <div class="main-inside">
             <div class="graph">
+                <div class="graph-box">
+                    <div class="graph-box apply_pie_chart" id="pie-chart-container">
+                        <canvas id="myPieChart"></canvas>
+                    </div>
+                </div>
+               
                 <div class="graph-box"></div>
-                <div class="graph-box"></div>
+
                 <div class="graph-box apply_graph">
                     <div id="chart-container">
                         <canvas id="my3DStackedChart"></canvas>
                     </div>
                 </div>
+
             </div>
             <div class="monitor">
                 <div class="monitor-box">
@@ -64,7 +84,7 @@
                 </div>
             </div>
         </div>
-        
+
     </div>
     <script src="ai.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -77,87 +97,87 @@
         const scene = new THREE.Scene();
 
         // Load background texture
-const textureLoader = new THREE.TextureLoader();
-const backgroundTexture = textureLoader.load('bg.avif'); // Path to your image file
-scene.background = backgroundTexture;
+        const textureLoader = new THREE.TextureLoader();
+        const backgroundTexture = textureLoader.load('bg.avif'); // Path to your image file
+        scene.background = backgroundTexture;
 
-// Camera and renderer setup
-const camera = new THREE.PerspectiveCamera(60, 4 / 6, 0.1, 1000);
-const renderer = new THREE.WebGLRenderer({ antialias: true });
-renderer.setSize(document.getElementById("scene-container").clientWidth, document.getElementById("scene-container").clientHeight);
-renderer.setPixelRatio(window.devicePixelRatio);
-document.getElementById("scene-container").appendChild(renderer.domElement);
+        // Camera and renderer setup
+        const camera = new THREE.PerspectiveCamera(60, 4 / 6, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(document.getElementById("scene-container").clientWidth, document.getElementById("scene-container").clientHeight);
+        renderer.setPixelRatio(window.devicePixelRatio);
+        document.getElementById("scene-container").appendChild(renderer.domElement);
 
-// Enable shadows
-renderer.shadowMap.enabled = true;
-renderer.shadowMap.type = THREE.PCFSoftShadowMap; // Soft shadows
+        // Enable shadows
+        renderer.shadowMap.enabled = true;
+        renderer.shadowMap.type = THREE.PCFSoftShadowMap; // Soft shadows
 
-// Ambient light
-const ambientLight = new THREE.AmbientLight(0xa8caff, 0.5); // Reduced intensity for better contrast
-scene.add(ambientLight);
+        // Ambient light
+        const ambientLight = new THREE.AmbientLight(0xa8caff, 0.5); // Reduced intensity for better contrast
+        scene.add(ambientLight);
 
-// Directional light
-const directionalLight = new THREE.DirectionalLight(0xA8CAFF, 1.0); // Increased intensity
-directionalLight.position.set(5, 10, 7); // Adjust position for better lighting
-directionalLight.castShadow = true;
+        // Directional light
+        const directionalLight = new THREE.DirectionalLight(0xA8CAFF, 1.0); // Increased intensity
+        directionalLight.position.set(5, 10, 7); // Adjust position for better lighting
+        directionalLight.castShadow = true;
 
-// Optimize shadow settings
-directionalLight.shadow.mapSize.width = 1024; // Shadow resolution
-directionalLight.shadow.mapSize.height = 1024;
-directionalLight.shadow.camera.near = 0.5;
-directionalLight.shadow.camera.far = 50;
-directionalLight.shadow.bias = -0.001; // Reduce shadow acne
+        // Optimize shadow settings
+        directionalLight.shadow.mapSize.width = 1024; // Shadow resolution
+        directionalLight.shadow.mapSize.height = 1024;
+        directionalLight.shadow.camera.near = 0.5;
+        directionalLight.shadow.camera.far = 50;
+        directionalLight.shadow.bias = -0.001; // Reduce shadow acne
 
-scene.add(directionalLight);
+        scene.add(directionalLight);
 
-// Spotlight
-const spotLight = new THREE.SpotLight(0xa8caff, 2, 10, Math.PI / 4, 0.1, 2);
-spotLight.position.set(0, 5, 5);
-spotLight.castShadow = true;
+        // Spotlight
+        const spotLight = new THREE.SpotLight(0xa8caff, 2, 10, Math.PI / 4, 0.1, 2);
+        spotLight.position.set(0, 5, 5);
+        spotLight.castShadow = true;
 
-// Optimize spotlight shadow settings
-spotLight.shadow.mapSize.width = 1024;
-spotLight.shadow.mapSize.height = 1024;
-spotLight.shadow.camera.near = 0.5;
-spotLight.shadow.camera.far = 20;
+        // Optimize spotlight shadow settings
+        spotLight.shadow.mapSize.width = 1024;
+        spotLight.shadow.mapSize.height = 1024;
+        spotLight.shadow.camera.near = 0.5;
+        spotLight.shadow.camera.far = 20;
 
-scene.add(spotLight);
+        scene.add(spotLight);
 
-// Backlight
-const backLight = new THREE.PointLight(0xa8caff, 0.8);
-backLight.position.set(-5, -5, -5);
-scene.add(backLight);
+        // Backlight
+        const backLight = new THREE.PointLight(0xa8caff, 0.8);
+        backLight.position.set(-5, -5, -5);
+        scene.add(backLight);
 
-// Rectangular spotlight
-const rectSpotLight = new THREE.SpotLight(0xa8caff, 1, 4, Math.PI / 3, 0.5, 2);
-rectSpotLight.position.set(5, 2.5, 3);
-rectSpotLight.castShadow = true;
+        // Rectangular spotlight
+        const rectSpotLight = new THREE.SpotLight(0xa8caff, 1, 4, Math.PI / 3, 0.5, 2);
+        rectSpotLight.position.set(5, 2.5, 3);
+        rectSpotLight.castShadow = true;
 
-// Optimize rectangular spotlight shadow settings
-rectSpotLight.shadow.mapSize.width = 1024;
-rectSpotLight.shadow.mapSize.height = 1024;
-rectSpotLight.shadow.camera.near = 0.5;
-rectSpotLight.shadow.camera.far = 20;
+        // Optimize rectangular spotlight shadow settings
+        rectSpotLight.shadow.mapSize.width = 1024;
+        rectSpotLight.shadow.mapSize.height = 1024;
+        rectSpotLight.shadow.camera.near = 0.5;
+        rectSpotLight.shadow.camera.far = 20;
 
-scene.add(rectSpotLight);
+        scene.add(rectSpotLight);
 
-// Add environment map for reflections
-const pmremGenerator = new THREE.PMREMGenerator(renderer);
-pmremGenerator.compileEquirectangularShader();
+        // Add environment map for reflections
+        const pmremGenerator = new THREE.PMREMGenerator(renderer);
+        pmremGenerator.compileEquirectangularShader();
 
-new THREE.CubeTextureLoader()
-    .setPath('path/to/environment/') // Path to your environment map folder
-    .load(['px.jpg', 'nx.jpg', 'py.jpg', 'ny.jpg', 'pz.jpg', 'nz.jpg'], (cubeTexture) => {
-        scene.environment = pmremGenerator.fromCubemap(cubeTexture).texture;
-    });
+        new THREE.CubeTextureLoader()
+            .setPath('path/to/environment/') // Path to your environment map folder
+            .load(['px.jpg', 'nx.jpg', 'py.jpg', 'ny.jpg', 'pz.jpg', 'nz.jpg'], (cubeTexture) => {
+                scene.environment = pmremGenerator.fromCubemap(cubeTexture).texture;
+            });
 
-// Optional: Add a ground plane for shadows
-const groundGeometry = new THREE.PlaneGeometry(20, 20);
-const groundMaterial = new THREE.MeshStandardMaterial({ color: 0x808080 });
-const ground = new THREE.Mesh(groundGeometry, groundMaterial);
-ground.rotation.x = -Math.PI / 2; // Rotate to horizontal
-ground.receiveShadow = true;
-// scene.add(ground);
+        // Optional: Add a ground plane for shadows
+        const groundGeometry = new THREE.PlaneGeometry(20, 20);
+        const groundMaterial = new THREE.MeshStandardMaterial({ color: 0x808080 });
+        const ground = new THREE.Mesh(groundGeometry, groundMaterial);
+        ground.rotation.x = -Math.PI / 2; // Rotate to horizontal
+        ground.receiveShadow = true;
+        // scene.add(ground);
 
         async function setupVoiceDetection() {
             try {
@@ -310,7 +330,7 @@ ground.receiveShadow = true;
                 hoverBackgroundColor: 'rgba(46, 61, 73, 1)', // Slightly lighter on hover
                 hoverBorderWidth: 3,
                 borderRadius: 8,
-                barThickness: 15,  // Increased width of columns (from 12 to 15)
+                barThickness: 22,  // Increased width of columns (from 12 to 15)
             }]
         };
 
@@ -403,6 +423,79 @@ ground.receiveShadow = true;
         };
 
         const chart = new Chart(ctx, config);
+        // Chart.js setup for the Pie chart
+        const pieCtx = document.getElementById('myPieChart').getContext('2d');
+        const pieData = {
+            labels: ['Category 1', 'Category 2', 'Category 3', 'Category 4'],
+            datasets: [{
+                data: [10, 20, 30, 40], // Sample data values
+                backgroundColor: [
+                    'rgba(46, 61, 73, 0.8)',
+                    'rgba(46, 61, 73, 0.7)',
+                    'rgba(46, 61, 73, 0.6)',
+                    'rgba(46, 61, 73, 0.5)'
+                ],
+                borderColor: 'rgba(255, 255, 255, 0.3)',
+                borderWidth: 2,
+                hoverBackgroundColor: [
+                    'rgba(46, 61, 73, 1)',
+                    'rgba(46, 61, 73, 0.9)',
+                    'rgba(46, 61, 73, 0.8)',
+                    'rgba(46, 61, 73, 0.7)'
+                ],
+                hoverBorderWidth: 3
+            }]
+        };
+
+        const pieConfig = {
+            type: 'pie',
+            data: pieData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: {
+                            font: { size: 14 },
+                            padding: 10,
+                            usePointStyle: true,
+                        }
+                    },
+                    tooltip: {
+                        enabled: true,
+                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                        titleFont: { size: 16 },
+                        bodyFont: { size: 14 },
+                        cornerRadius: 10,
+                        displayColors: false,
+                        callbacks: {
+                            label: (ctx) => `Value: ${ctx.raw}`
+                        }
+                    },
+                    datalabels: {
+                        anchor: 'end',
+                        align: 'top',
+                        color: '#2c3e50',
+                        font: { size: 10, weight: 'bold' },
+                        formatter: (value) => value > 0 ? value : ''
+                    }
+                },
+                animation: {
+                    duration: 1500,
+                    easing: 'easeOutQuart',
+                },
+                interaction: {
+                    mode: 'nearest',
+                    intersect: false
+                },
+                layout: {
+                    padding: { top: 20 }
+                }
+            }
+        };
+
+        const pieChart = new Chart(pieCtx, pieConfig);
     </script>
 
 
