@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokiy - Login</title>
+    <style>
+        body {
+            background-color: rgba(8, 8, 14, 0.953);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .main {
+            height: 96%;
+            width: 98%;
+            border-radius: 2rem;
+            box-shadow: 0px 0px 5px 5px rgba(89, 160, 171, 0.277);
+            border: 2px solid grey;
+            overflow: hidden;
+            display: flex;
+        }
+
+        .main-inside {
+            width: 100%;
+            height: 100%;
+            background-image: url('graph_background.png');
+            background-size: cover;
+            border-radius: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: left;
+        }
+
+        .main-content {
+            width: 40rem;
+            padding: 3rem;
+            border-radius: 1.5rem;
+            margin-left: 80px;
+            border: 2px solid grey;
+            box-shadow: 0px 0px 10px rgba(89, 160, 171, 0.5);
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(0px);
+            text-align: center;
+            color: white;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .main-content:hover {
+            /* transform: scale(1.05); */
+            box-shadow: 0px 0px 10px rgba(110, 141, 145, 0.7);
+        }
+
+        h2 {
+            font-size: 2.9rem;
+            color: #95b3ee;
+            margin-bottom: 2.5rem;
+        }
+
+        .input-box {
+            width: 100%;
+            margin-bottom: 1.5rem;
+            border-radius: 2rem;
+            height: 3rem;
+        }
+
+        .input-box input {
+            width: 70%;
+            padding: 10px;
+            font-size: 1.3rem;
+            border: none;
+            border-radius: 1.2rem;
+            outline: none;
+            background: rgba(186, 186, 186, 0.285);
+            color: white;
+            transition: background 0.3s;
+        }
+
+        .input-box input:focus {
+            background: rgba(117, 117, 117, 0.3);
+        }
+
+        .input-box input::placeholder {
+            color: rgba(234, 234, 234, 0.6);
+        }
+
+        .login-btn {
+            width: 30%;
+            padding: 12px;
+            font-size: 1.7rem;
+            font-weight: bold;
+            background-color: #317af9;
+            border: none;
+            border-radius: 2rem;
+            cursor: pointer;
+            color: white;
+            transition: background-color 0.3s;
+        }
+
+        .login-btn:hover {
+            background-color: #2e5fae;
+        }
+
+        .forgot-password {
+            margin-top: 1rem;
+            color: rgba(231, 231, 231, 0.7);
+            font-size: 0.9rem;
+        }
+
+        .forgot-password a {
+            color: #9cb6e0;
+            text-decoration: none;
+        }
+
+        .forgot-password a:hover {
+            text-decoration: underline;
+        }
+
+        .text-box {
+            margin-top: 200px;
+            margin-right: 130px;
+            width: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            /* Start text from the top */
+            align-items: center;
+            font-size: 18px;
+            color: #ffffffc9;
+            text-align: left;
+            /* Proper text alignment */
+            width: 300px;
+            /* max-width: 400px; */
+            overflow: hidden;
+            position: absolute;
+            top: 20px;
+            /* Move to top */
+            right: 20px;
+            line-height: 30px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="main">
+        <div class="main-inside">
+            <form action="ai.html" class="main-content">
+                <h2 style="font-family:Verdana, Geneva, Tahoma, sans-serif">Login to Pokiy</h2>
+                <div class="input-box">
+                    <input type="text" placeholder="Username" required>
+                </div>
+                <div class="input-box">
+                    <input type="password" placeholder="Password" required>
+                </div>
+                <button class="login-btn">Log In</button>
+                <p class="forgot-password">Forgot password? <a href="#">Click here</a></p>
+            </form>
+            <div class="text-box" id="animatedText"></div>
+        </div>
+
+    </div>
+
+    <script>
+        const textElement = document.getElementById("animatedText");
+        const text = "Pokiy is an advanced AI bot designed to enhance your interview preparation through speech-to-speech interaction. It analyzes your performance, detects weak areas, and adapts questions from basic to advanced levels to help you master every topic. Your progress is tracked daily, providing valuable insights to improve your skills.                        🚀 Login now and start your journey toward interview success!";
+        let index = 0;
+        let reverse = false;
+    
+        function typeEffect() {
+            textElement.textContent = text.substring(0, index);
+    
+            if (!reverse) {
+                index++;
+                if (index > text.length) {
+                    reverse = true;
+                    setTimeout(typeEffect, 1000); // Pause before reversing
+                    return;
+                }
+                setTimeout(typeEffect, 30); // Forward speed
+            } else {
+                index--;
+                if (index < 0) {
+                    reverse = false;
+                }
+                setTimeout(typeEffect, 2); // Faster reverse speed
+            }
+        }
+    
+        typeEffect();
+    </script>
+    
+</body>
+
+</html>
+
+

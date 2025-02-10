@@ -19,20 +19,17 @@
 
         .apply_graph,
         .apply_pie_chart {
-            background-color: rgba(208, 222, 228, 0.382);
-            /* Light background for contrast */
-            border: 2px solid #2e3d49;
-            /* Dark border to match the theme */
+            background-color: rgba(248, 227, 246, 0.126);
             border-radius: 20px;
             padding: 20px;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            
         }
 
         #chart-container,
         #pie-chart-container {
             width: 100%;
             height: 100%;
-            background: rgba(203, 211, 212, 0.881);
+            background: rgb(244, 255, 254);
             border-radius: 20px;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
             padding: 10px;
@@ -50,6 +47,9 @@
 
 <body>
     <!-- Content omitted for brevity -->
+     <div>
+
+     </div>
 
     <div class="main-content">
         <div class="main-inside">
@@ -60,7 +60,29 @@
                     </div>
                 </div>
                
-                <div class="graph-box"></div>
+                <div class="graph-box">
+                    <div class="overlay-box-1">
+                        <h3 style="margin: 0 0 10px 0;
+                        font-size: 1.9em;
+                        color: #a8caff;">Performance Analysis</h3>
+                        <div class="status-indicator">
+                            <div class="status-light"></div>
+                            <span>Connected</span>
+                        </div>
+                        <div class="status-indicator">
+                            <div class="status-light"></div>
+                            <span>Connected</span>
+                        </div>
+                        <div class="status-indicator">
+                            <div class="status-light"></div>
+                            <span>Connected</span>
+                        </div>
+                        <div class="status-indicator">
+                            <div class="status-light"></div>
+                            <span>Connected</span>
+                        </div>
+                    </div>
+                </div>
 
                 <div class="graph-box apply_graph">
                     <div id="chart-container">
@@ -73,8 +95,8 @@
                 <div class="monitor-box">
                     <div class="model" id="scene-container">
                         <div class="overlay-box">
-                            <h3>Model Status</h3>
-                            <p>AI Assistant Active is one of the most powerful robot</p>
+                            <h3><i class="fa-solid fa-robot"></i>   Pokiy</h3>
+                            <p>AI Assistant Active</p>
                             <div class="status-indicator">
                                 <div class="status-light"></div>
                                 <span>Connected</span>
@@ -324,7 +346,7 @@
             datasets: [{
                 label: 'Daily Analysis',
                 data: dataset2,
-                backgroundColor: 'rgba(46, 61, 73, 0.8)',  // Dark color for all bars
+                backgroundColor: 'rgba(46, 61, 73, 1)',  // Dark color for all bars
                 borderColor: 'rgba(255, 255, 255, 0.3)',
                 borderWidth: 2,
                 hoverBackgroundColor: 'rgba(46, 61, 73, 1)', // Slightly lighter on hover
@@ -342,30 +364,7 @@
                 maintainAspectRatio: false,
                 plugins: {
                     legend: {
-                        position: 'top',
-                        labels: {
-                            font: { size: 14 },
-                            padding: 20,
-                            usePointStyle: true,
-                        }
-                    },
-                    tooltip: {
-                        enabled: true,
-                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                        titleFont: { size: 16 },
-                        bodyFont: { size: 14 },
-                        cornerRadius: 10,
-                        displayColors: false,
-                        callbacks: {
-                            label: (ctx) => `Value: ${ctx.raw}`
-                        }
-                    },
-                    datalabels: {
-                        anchor: 'end',
-                        align: 'top',
-                        color: '#2c3e50',
-                        font: { size: 10, weight: 'bold' },
-                        formatter: (value) => value > 0 ? value : ''
+                       display:false
                     }
                 },
                 scales: {
@@ -376,7 +375,7 @@
                         title: {
                             display: true,
                             text: 'Days of Month',
-                            font: { size: 14 }
+                            font: { size: 12 }
                         }
                     },
                     y: {
@@ -390,7 +389,7 @@
                         title: {
                             display: true,
                             text: 'Performance Metrics',
-                            font: { size: 14 }
+                            font: { size: 12 }
                         },
                         ticks: {
                             stepSize: 2,  // Decreased gap between Y-axis numbers
@@ -430,10 +429,10 @@
             datasets: [{
                 data: [10, 20, 30, 40], // Sample data values
                 backgroundColor: [
+                    'rgba(46, 61, 73, 1)',
+                    'rgba(46, 61, 73, 0.9)',
                     'rgba(46, 61, 73, 0.8)',
-                    'rgba(46, 61, 73, 0.7)',
-                    'rgba(46, 61, 73, 0.6)',
-                    'rgba(46, 61, 73, 0.5)'
+                    'rgba(46, 61, 73, 0.7)'
                 ],
                 borderColor: 'rgba(255, 255, 255, 0.3)',
                 borderWidth: 2,
