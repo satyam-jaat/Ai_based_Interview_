@@ -1,138 +1,96 @@
 body {
-    background-color: #000000ea;
-}
-
-.navbar {
-    border-radius: 1.5rem;
-    width: 100%;
+    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+    color: white;
+    font-family: Arial, sans-serif;
 }
 
 .nav-bar {
+    display: flex;
     align-items: center;
-    height: 40px;
+    justify-content: space-between;
+    padding: 15px 50px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 0 0 20px 20px;
+    /* position: fixed; */
+    width: 100%;
     top: 0;
     left: 0;
-    right: 0;
-}
+    z-index: 1000;
+  }
 
-.nav-bar a {
-    font-size: 25px;
-    color: white;
-    width: 100%;
-}
-
-
-.nav-bar {
-    background-color: #62aab7;
-    width: 100%;
-    height: 60px;
-    color: white;
-    border-radius: 20px;
-}
-
-.nav-items {
-    margin-left: 10px;
-    display: flex;
-}
-
-.logo {
-    margin-left: 1rem;
-    margin-top: 1rem;
+  .logo {
     font-size: 28px;
-    align-self: center;
-}
-
-.name {
-    margin-top: 1rem;
-    margin-left: 1rem;
-    align-items: center;
-    font-size: 20px;
-}
-
-.main-content {
-    width: 88rem;
-    height: 47rem;
-    padding-top: 70px;
-    background-color: rgba(25, 25, 25, 0.856);
-    margin-left: 0.9rem;
-    border-radius: 2rem;
-    margin-top: 0.7rem;
-    border: 2px solid grey;
-    box-shadow: 0px 0px 5px 5px rgba(89, 160, 171, 0.277);
-    margin-bottom: 2rem;
-}
+    font-weight: bold;
+  }
 
 .main-inside {
     width: 87rem;
     height: 46rem;
     /* background-color: #222e2e; */
-    margin-left: 0.5rem;
-    margin-top: -4rem;
+    margin-top:5px;
+    margin-left: 0.9rem;
     border-radius: 2rem;
     /* box-shadow: 0px 0px 5px 5px rgba(121, 213, 227, 0.468); */
     display: flex;
     justify-content: space-between;
+    
 }
 
-.welcome {
-    color: white;
-    font-size: 200px;
-    text-align: center;
-    margin-top: 300px;
-    margin-bottom: 200px;
-}
+
 
 .graph {
-    height: 100%;
-    width: 60%;
-    background-image: url('graph_background.png');
-    background-repeat: no-repeat;
-    background-size: cover;
+    margin-top: 30px;
+    height: 90%;
+    width: 67%;
     border-radius: 2rem;
     display: flex;
     flex-wrap: wrap;
 }
 
 .monitor {
-    height: 100%;
-    width: 40%;
-    background-color: #1a2024;
+    margin-top:29.5px;
+    height: 87%;
+    width: 37%;
+    /* background-color: #1a2024; */
     border-radius: 2rem;
+    box-shadow: 0 4px 6px rgb(3, 20, 38);
 
 }
 
 .graph-box {
-    height: 45%;
-    width: 45%;
+    height: 43%;
+    width: 44.5%;
     /* border-radius: 2rem; */
     /* background-color: rgba(255, 255, 255, 0.067); */
     margin-left: 1.5rem;
-    margin-top: 0.7rem;
     display: flex;
     background: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(20px);
     border-radius: 1.5rem;
     padding: 20px;
     color: white;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.23);
+    box-shadow: 0 6px 6px rgb(3, 20, 38);
+    /* border: 1px solid rgba(255, 255, 255, 0.23); */
     z-index: 2;
 }
 
 .monitor-box {
-    height: 98%;
-    width: 97%;
+    height: 100%;
+    width: 100%;
     border-radius: 2rem;
-    background-color: #ffffff17; 
-    margin-top: 0.5rem;
-    margin-left: 0.5rem;
+    /* background-color: #ffffff17; */
+    /* margin-top: 0.3rem; */
+    
+    /* margin-right: 0.5rem; */
     display: flex;
     /* this is the css part of 3d model  */
     /* margin: 0; */
     overflow: hidden;
     /* background: grey; */
-    display: flex;
-    justify-content: flex-end;
+    /* display: flex; */
+    /* justify-content: flex-end; */
+
     align-items: center;
 }
 
@@ -155,16 +113,18 @@ body {
 }
 
 #scene-container {
+    /* margin-top:-100px; */
     width: 100%;
-    background-color: white;
+    background-color: rgb(18, 72, 70);
     height: 100%;
-    
+    border-radius: 2rem;
+
 }
 
 .overlay-box {
     position: absolute;
-    bottom: 40px;
-    height: 170px;
+    bottom: 60px;
+    height: 150px;
     left: 40px;
     right: 40px;
     background: rgba(255, 255, 255, 0.1);
@@ -172,7 +132,7 @@ body {
     border-radius: 1rem;
     padding: 20px;
     color: white;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 6px 6px rgba(0, 0, 0, 0.1);
     border: 1px solid rgba(255, 255, 255, 0.23);
     z-index: 2;
 }
@@ -210,7 +170,17 @@ body {
 }
 
 .apply_graph {
-    width:92.7%;
+    width: 92.7%;
     height: 50%;
     bottom: 1.2rem;
 }
+
+
+.footer {
+    background: rgba(255, 255, 255, 0.1);
+    text-align: center;
+    padding: 30px;
+    font-size: 14px;
+    backdrop-filter: blur(5px);
+    border-radius: 20px 20px 0 0;
+  }
