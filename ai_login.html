@@ -28,7 +28,7 @@
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
             border-radius: 0 0 20px 20px;
-            position: fixed;
+            /* position: fixed; */
             width: 100%;
             top: 0;
             left: 0;
@@ -55,7 +55,7 @@
             width: 40rem;
             padding: 3rem;
             border-radius: 1.5rem;
-            margin-top: 200px;
+            margin-top: 121px;
             margin-left: 100px;
             margin-bottom: 125px;
             /* border: 2px solid grey; */
@@ -163,7 +163,7 @@
 
     <div class="nav-bar">
         <div class="logo">
-            <i class="fa-solid fa-robot"></i> Pokiy
+            <i class="fa-solid fa-p"></i><span class="brand-name">okiy</span>        
         </div>
     </div>
 
@@ -198,7 +198,7 @@
                 index++;
                 if (index > text.length) {
                     forward = false;
-                    setTimeout(typeEffect, 2000);
+                    setTimeout(typeEffect, 5000);
                     return;
                 }
                 setTimeout(typeEffect, 25);
