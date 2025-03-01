@@ -20,6 +20,8 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-3d@latest"></script>
+    <script src="https://kit.fontawesome.com/YOUR_KIT_CODE.js" crossorigin="anonymous"></script>
+
 
     <style>
         .apply_graph,
@@ -43,8 +45,46 @@
 
         #pie-chart-container {
             height: 247.84px;
-            width: 331.2px;
+            width: 340.2px;
             margin: 0 auto;
+        }
+
+        #status {
+            margin-top: 10px;
+            font-size: 18px;
+        }
+
+        #startBtn {
+            background-color: white;
+            border-radius: 50%;
+            /* 100% works, but 50% is better for circles */
+            border: none;
+            /* 0px solid is unnecessary */
+
+            height: 45px;
+            width: 45px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: transform 0.4s ease-in-out;
+            /* Fix: Added 'transform' for smoother effect */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.2);
+            position: absolute;
+            top: 20px;
+            left: 390px;
+            /* Optional: Adds a subtle shadow */
+        }
+
+        #startBtn:hover {
+            transform: scale(1.2);
+            cursor: pointer;
+            /* Fix: 'scale' instead of 'transform' */
+        }
+
+        .start {
+            position: relative;
         }
     </style>
 </head>
@@ -53,69 +93,73 @@
 
     <div class="nav-bar">
         <div class="logo">
-          <i class="fa-solid fa-robot"></i> <span class="brand-name">Pokiy</span>
+            <i class="fa-solid fa-p"></i><span class="brand-name">okiy</span>
         </div>
-      </div>
+    </div>
 
-        <div class="main-inside">
-            <div class="graph">
-                <div class="graph-box">
-                    <div class="apply_pie_chart" id="pie-chart-container">
-                        <canvas id="myPieChart"></canvas>
-                    </div>
+    <div class="main-inside">
+        <div class="graph">
+            <div class="graph-box">
+                <div class="apply_pie_chart" id="pie-chart-container">
+                    <canvas id="myPieChart"></canvas>
                 </div>
+            </div>
 
-                <div class="graph-box">
-                    <div class="overlay-box-1">
-                        <h3 style="margin: 0 0 10px 0;
+            <div class="graph-box">
+                <div class="overlay-box-1">
+                    <h3 style="margin: 0 0 10px 0;
                         font-size: 1.9em;
                         color: #a8caff;">Performance Analysis</h3>
-                        <div class="status-indicator">
-                            <div class="status-light"></div>
-                            <span>Connected</span>
-                        </div>
-                        <div class="status-indicator">
-                            <div class="status-light"></div>
-                            <span>Connected</span>
-                        </div>
-                        <div class="status-indicator">
-                            <div class="status-light"></div>
-                            <span>Connected</span>
-                        </div>
-                        <div class="status-indicator">
-                            <div class="status-light"></div>
-                            <span>Connected</span>
-                        </div>
+                    <div class="status-indicator">
+                        <div class="status-light"></div>
+                        <span>Connected</span>
+                    </div>
+                    <div class="status-indicator">
+                        <div class="status-light"></div>
+                        <span>Connected</span>
+                    </div>
+                    <div class="status-indicator">
+                        <div class="status-light"></div>
+                        <span>Connected</span>
+                    </div>
+                    <div class="status-indicator">
+                        <div class="status-light"></div>
+                        <span>Connected</span>
                     </div>
                 </div>
-
-                <div class="graph-box apply_graph">
-                    <div id="chart-container">
-                        <canvas id="my3DStackedChart"></canvas>
-                    </div>
-                </div>
-
             </div>
-            <div class="monitor">
-                <div class="monitor-box ">
-                    <div class="model" id="scene-container">
-                        <div class="overlay-box">
-                            <h3><i class="fa-solid fa-robot"></i> Pokiy</h3>
-                            <p>AI Assistant Active</p>
-                            <div class="status-indicator">
-                                <div class="status-light"></div>
-                                <span>Connected</span>
-                            </div>
-                        </div>
+
+            <div class="graph-box apply_graph">
+                <div id="chart-container">
+                    <canvas id="my3DStackedChart"></canvas>
+                </div>
+            </div>
+
+        </div>
+        <div class="monitor">
+            <div class="monitor-box ">
+                <div class="model" id="scene-container">
+                    <div class="overlay-box">
+
+                        <!-- <h3><i class="fa-solid fa-p start"></i>okiy</h3> -->
+
+                        <div id="status">Press the button to begin...</div>
+                        <button id="startBtn"><i class="fa-solid fa-play"></i></button>
+
+                        <!-- <div class="status-indicator">
+                            <div class="status-light"></div>
+                            <span>Connected</span>
+                        </div> -->
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 
-        <footer class="footer">
-            &copy; 2025 Pokiy | Developed by Satyam.
-        
-        </footer>
+    <footer class="footer">
+        &copy; 2025 Pokiy | Developed by Satyam.
+
+    </footer>
     <script src="ai.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
@@ -226,7 +270,7 @@
                     analyser.getByteFrequencyData(dataArray);
                     let sum = dataArray.reduce((a, b) => a + b, 0);
 
-                    if (sum > 7000) { // Adjust this threshold as needed
+                    if (sum > 3500) { // Adjust this threshold as needed
                         if (!isSpeaking) {
                             isSpeaking = true;
                             targetRotationWhenSpeaking.x = currentRotationX;
@@ -253,8 +297,8 @@
         let targetRotationX = 0;
         let currentRotationY = 0;
         let targetRotationY = 0;
-        const rotationSpeed = 0.07; // Increased speed
-        const maxRotation = THREE.MathUtils.degToRad(22); // Increased to 20 degrees
+        const rotationSpeed = 0.04; // Increased speed
+        const maxRotation = THREE.MathUtils.degToRad(20); // Increased to 20 degrees
         let isRotating = false;
 
         // Load model
@@ -265,7 +309,7 @@
 
             // Center and scale model
             model.position.set(0, 1, 1);
-            model.scale.set(2.0, 2.0, 2.0);
+            model.scale.set(2.1, 2.1, 2.1);
 
             // Start oscillation
             setNewRotationTarget();
@@ -276,7 +320,7 @@
 
         // Camera positioning
         camera.position.z = 3.5;
-        camera.position.y = 0.6;
+        camera.position.y = 0.5;
 
         // Random oscillation logic
         function setNewRotationTarget() {
@@ -504,6 +548,117 @@
         };
 
         const pieChart = new Chart(pieCtx, pieConfig);
+        
+        const status = document.getElementById('status');
+        const startBtn = document.getElementById('startBtn');
+        const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+        const synth = window.speechSynthesis;
+        let technicalMode = false;
+        let currentQuestionData = null;
+        let isBotSpeaking = false; // Flag to track if the bot is speaking
+
+        recognition.continuous = false;
+        recognition.interimResults = false;
+        recognition.lang = 'en-US';
+
+        async function sendToBackend(message) {
+            status.innerHTML = `<span style="color: #aaaaaa;">You:</span> ${message}<br>`;
+            const url = technicalMode ? 'https://ac81-35-204-13-55.ngrok-free.app/evaluate' : 'https://ac81-35-204-13-55.ngrok-free.app/chat';
+            const body = technicalMode ? { answer: message, question_data: currentQuestionData } : { message: message };
+
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(body)
+                });
+                const data = await response.json();
+
+                console.log("Response from backend:", data); // Debug: Check what’s received
+                if (data.audio) {
+                    playAudio(data.audio);
+                } else {
+                    console.error("No audio data received");
+                    status.innerHTML += `<span style="color: red;">Error:</span> No audio from bot<br>`;
+                }
+                status.innerHTML += `<span style="color: #aaaaaa;">Bot:</span> ${data.response}<br>`;
+
+                if (data.exit) {
+                    recognition.stop();
+                    status.innerHTML += `<span style="color: white;">Chatbot ended. Refresh to restart.</span>`;
+                    return;
+                }
+
+                if (data.technical) {
+                    technicalMode = true;
+                    currentQuestionData = data.question_data;
+                } else {
+                    technicalMode = false;
+                    currentQuestionData = null;
+                }
+
+            } catch (error) {
+                console.error("Fetch error:", error);
+                status.textContent += " | Error connecting to bot";
+            }
+        }
+
+        function playAudio(base64Audio) {
+            try {
+                const audio = new Audio(`data:audio/mp3;base64,${base64Audio}`);
+
+                // Stop recognition when bot starts speaking
+                recognition.stop();
+                isBotSpeaking = true; // Set the flag to true when bot starts speaking
+
+                audio.play().then(() => {
+                    audio.onended = () => {
+                        isBotSpeaking = false; // Reset the flag when bot finishes speaking
+                        recognition.start(); // Start recognition only when bot finishes speaking
+                    };
+                }).catch(error => {
+                    console.error("Audio playback error:", error);
+                    status.textContent += " | Error: Audio blocked or failed";
+                    isBotSpeaking = false; // Reset the flag in case of error
+                    recognition.start(); // In case of error, restart recognition
+                });
+            } catch (error) {
+                console.error("Audio creation error:", error);
+                status.textContent += " | Error: Invalid audio data";
+                isBotSpeaking = false; // Reset the flag in case of error
+                recognition.start(); // Restart recognition in case of error
+            }
+        }
+
+        recognition.onresult = (event) => {
+            const message = event.results[0][0].transcript.trim();
+            recognition.stop();
+            sendToBackend(message);
+        };
+
+        recognition.onerror = (event) => {
+            status.textContent = "Listening...";
+            if (!isBotSpeaking) { // Only start recognition if the bot is not speaking
+                setTimeout(() => recognition.start(), 100);
+            }
+        };
+
+        recognition.onend = () => {
+            if (!status.textContent.includes("ended") && !isBotSpeaking) { // Only start recognition if the bot is not speaking
+                recognition.start();
+            }
+        };
+
+        // Start chatbot only after user clicks the button
+        startBtn.addEventListener('click', () => {
+            recognition.start();
+            startBtn.style.display = 'none'; // Hide button after starting
+            status.textContent = "Listening...";
+        });
+
+        document.getElementById("startBtn").addEventListener("click", function () {
+            document.getElementById("status").innerText = "Pokiy Listening...";
+        });
     </script>
 
 
